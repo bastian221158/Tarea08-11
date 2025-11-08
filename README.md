@@ -1,4 +1,4 @@
-´´´
+'''
 # Define la versión del formato de Docker Compose.
 version: '3.8'
 # 'services' es la sección donde defines todos tus contenedores.
@@ -75,4 +75,4 @@ services:
 volumes:
   wp_data:
   db_data:
-´´´
+'''
