@@ -1,13 +1,25 @@
-'''
+# 🚀 Proyecto WordPress con Docker Compose
+
+Este repositorio contiene un archivo `docker-compose.yml` listo para desplegar un sitio de WordPress (con Apache) junto a una base de datos MariaDB.
+
+---
+
+## 🛠️ Archivo `docker-compose.yml`
+
+El siguiente es el contenido completo del archivo `docker-compose.yml` necesario para levantar los servicios. El código está documentado línea por línea para explicar qué hace cada parte.
+
+Simplemente copia este código en un archivo llamado `docker-compose.yml` y ejecútalo.
+
+```yml
 # Define la versión del formato de Docker Compose.
 version: '3.8'
+
 # 'services' es la sección donde defines todos tus contenedores.
 services:
 
   # Este es el nombre de tu servicio de WordPress
   # Este nombre es importante para la comunicación interna.
   wp:
-    # Equivalentes a tu comando
 
     # 'image' es la imagen de Docker que se usará.
     image: wordpress:6-apache
@@ -19,7 +31,7 @@ services:
     ports:
       - "8082:80"
 
-    # Añadidos para que funcione
+    # --- Añadidos para que funcione ---
 
     # 'restart: always' asegura que el contenedor se reinicie solo
     # si se cae o si reinicias el PC.
@@ -27,15 +39,12 @@ services:
 
     # 'volumes' hace que los datos sean persistentes (no se borren con el contenedor).
     # 'wp_data' es un "volumen nombrado" que definimos más abajo.
-    # Esto guarda tu carpeta /wp-content/ (temas, plugins, archivos subidos).
     volumes:
       - wp_data:/var/www/html
 
     # 'environment' define las variables de entorno que WordPress necesita
     # para conectarse a la base de datos que también vamos a crear.
     environment:
-      # Le dice a WordPress dónde está la base de datos.
-      # 'db' es el nombre del servicio de la base de datos (ver abajo).
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: wordpress_db
       WORDPRESS_DB_USER: wp_user
@@ -46,7 +55,7 @@ services:
     depends_on:
       - db
 
-  # Nuevo Servicio: La Base de Datos
+  # --- Nuevo Servicio: La Base de Datos (Necesaria) ---
   
   # Este es el servicio de la base de datos. Lo llamamos 'db'.
   db:
@@ -54,25 +63,44 @@ services:
     image: mariadb:latest
     container_name: wp_db
     restart: always
-
-    # Otro volumen para que los datos de la BD (posts, usuarios, etc.) no se pierdan.
     volumes:
       - db_data:/var/lib/mysql
 
     # Variables de entorno para configurar la base de datos al crearla.
     environment:
-      # Contraseña del superadmin (root) de la base de datos.
       MYSQL_ROOT_PASSWORD: password_root_MUY_seguro
-      # Crea esta base de datos al iniciar.
       MYSQL_DATABASE: wordpress_db
-      # Crea este usuario.
       MYSQL_USER: wp_user
-      # Le da esta contraseña al usuario.
       MYSQL_PASSWORD: password_seguro
 
 # 'volumes' es la sección donde se "declaran" los volúmenes nombrados
-# que usamos arriba. Docker gestionará dónde se guardan estos datos en tu PC.
 volumes:
   wp_data:
   db_data:
-'''
+```
+
+---
+
+## 🚀 Cómo Arrancar
+
+1.  Crea una carpeta para tu proyecto.
+2.  Crea un archivo llamado `docker-compose.yml` y pega el código de arriba.
+3.  (Opcional pero recomendado) Cambia las contraseñas `password_seguro` y `password_root_MUY_seguro`.
+4.  Abre una terminal en esa carpeta y ejecuta:
+    ```bash
+    docker-compose up -d
+    ```
+5.  Accede a tu sitio en **`http://localhost:8082`**.
+
+---
+
+## 🛑 Comandos Útiles
+
+* **Para detener los contenedores:**
+    ```bash
+    docker-compose down
+    ```
+* **Para detener Y BORRAR los datos (volúmenes):**
+    ```bash
+    docker-compose down -v
+    ```
