@@ -37,7 +37,7 @@ services:
     # si se cae o si reinicias el PC.
     restart: always
 
-    # 'volumes' hace que los datos sean persistentes (no se borren con el contenedor).
+    # 'volumes' hace que los datos sean persistentes.
     # 'wp_data' es un "volumen nombrado" que definimos más abajo.
     volumes:
       - wp_data:/var/www/html
@@ -55,7 +55,7 @@ services:
     depends_on:
       - db
 
-  # --- Nuevo Servicio: La Base de Datos (Necesaria) ---
+  # --- Nuevo Servicio: La Base de Datos ---
   
   # Este es el servicio de la base de datos. Lo llamamos 'db'.
   db:
@@ -85,7 +85,7 @@ volumes:
 
 1.  Crea una carpeta para tu proyecto.
 2.  Crea un archivo llamado `docker-compose.yml` y pega el código de arriba.
-3.  (Opcional pero recomendado) Cambia las contraseñas `password_seguro` y `password_root_MUY_seguro`.
+3.  Cambia las contraseñas `password_seguro` y `password_root_MUY_seguro`.
 4.  Abre una terminal en esa carpeta y ejecuta:
     ```bash
     docker-compose up -d
@@ -100,7 +100,7 @@ volumes:
     ```bash
     docker-compose down
     ```
-* **Para detener Y BORRAR los datos (volúmenes):**
+* **Para detener Y BORRAR los datos:**
     ```bash
     docker-compose down -v
     ```
